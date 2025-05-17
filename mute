@@ -1,0 +1,28 @@
+#!/bin/bash
+
+readonly SOURCE_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+MUTE_CLIP="$SOURCE_DIR/assets/mute.wav"
+UNMT_CLIP="$SOURCE_DIR/assets/unmt.wav"
+ALRT_CLIP="$SOURCE_DIR/assets/alrt.wav"
+
+BUILTIN_INP="alsa_input"
+DEFAULT_INP=$(pactl get-default-source)
+DEFAULT_OUT=$(pactl get-default-sink)
+
+IS_MUTED=$(pactl get-source-mute $DEFAULT_INP)
+
+if echo "$DEFAULT_INP" | grep -qE "$BUILTIN_INP";
+then
+	paplay $ALRT_CLIP
+else
+	pactl set-source-mute $DEFAULT_INP toggle
+
+	if [ "$IS_MUTED" = "Mute: no" ]
+	then
+    	paplay $MUTE_CLIP
+	else
+		paplay $UNMT_CLIP
+	fi
+fi
+
