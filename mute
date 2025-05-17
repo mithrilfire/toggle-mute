@@ -1,6 +1,8 @@
 #!/bin/bash
 
-readonly SOURCE_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+readonly SOURCE_DIR="$(dirname "$SCRIPT_PATH")"
+# readonly SOURCE_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 MUTE_CLIP="$SOURCE_DIR/assets/mute.wav"
 UNMT_CLIP="$SOURCE_DIR/assets/unmt.wav"
